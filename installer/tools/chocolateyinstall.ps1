@@ -129,7 +129,7 @@ function CleanUp
   Remove-Item $cache -Recurse
 
   # Final commandovm installation
-  iex "choco upgrade config $globalCinstArgs"
+  iex "choco upgrade config.1.0.nuspec -s config\"
 }
 
 

@@ -160,7 +160,7 @@ try {
 $Boxstarter.RebootOk = $true    # Allow reboots?
 $Boxstarter.NoPassword = $false # Is this a machine with no login password?
 $Boxstarter.AutoLogin = $true   # Save my password securely and auto-login after a reboot
-Set-BoxstarterConfig -NugetSources "preconfig\;installer\;config\"
+#$Set-BoxstarterConfig -NugetSources "preconfig\;installer\;config\"
 
 # Needed for many applications
 iex "cinst -y powershell"
@@ -168,7 +168,7 @@ iex "cinst -y powershell"
 # Pack all the steps
 
 iex "choco pack preconfig\preconfig.nuspec --outputdirectory preconfig\"
-iex "choco pack installer\installer.nuspec --outputdirectory installer\"
+iex "choco pack installer\installer.nuspec --outputdirectory C:\WINDOWS\system32\"
 iex "choco pack config\config.nuspec --outputdirectory config\"
 
 choco config set cacheLocation ${Env:TEMP}
