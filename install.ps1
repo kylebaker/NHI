@@ -68,15 +68,12 @@ Write-Host "[+] Beginning install..."
 Write-Host " ____________________________________________________________________________ " -ForegroundColor Red 
 Write-Host "|                                                                            |" -ForegroundColor Red 
 Write-Host "|    "  -ForegroundColor Red -NoNewline; Write-Host "                  " -ForegroundColor Green -NoNewline; Write-Host "                                                      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host " ________   ___  ___  ___          ___       ________  ________  _________  ________  ________  ________ " -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "|\   ___  \|\  \|\  \|\  \        |\  \     |\   __  \|\   __  \|\___   ___\\   __  \|\   __  \|\   ____\" -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "\ \  \\ \  \ \  \\\  \ \  \       \ \  \    \ \  \|\  \ \  \|\  \|___ \  \_\ \  \|\  \ \  \|\  \ \  \___|" -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host " \ \  \\ \  \ \   __  \ \  \       \ \  \    \ \   __  \ \   ____\   \ \  \ \ \  \\\  \ \   ____\ \_____  \" -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "  \ \  \\ \  \ \  \ \  \ \  \       \ \  \____\ \  \ \  \ \  \___|    \ \  \ \ \  \\\  \ \  \___|\|____|\  \ " -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "   \ \__\\ \__\ \__\ \__\ \__\       \ \_______\ \__\ \__\ \__\        \ \__\ \ \_______\ \__\     ____\_\  \ " -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "    \|__| \|__|\|__|\|__|\|__|        \|_______|\|__|\|__|\|__|         \|__|  \|_______|\|__|    |\_________\" -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "                                                                                                  \|_________|" -ForegroundColor Green -NoNewline; Write-Host "      |" -ForegroundColor Red 
-
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "     __       _____     __             _   " -ForegroundColor Green -NoNewline; Write-Host "                         |" -ForegroundColor Red 
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "  /\ \ \/\  /\\_   \   / /  __ _ _ __ | |_ __" -ForegroundColor Green -NoNewline; Write-Host "                       |" -ForegroundColor Red 
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host " /  \/ / /_/ / / /\/  / /  / _  | '_ \| __/ _ \| '_ \/ __|" -ForegroundColor Green -NoNewline; Write-Host "          |" -ForegroundColor Red 
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "/ /\  / __  /\/ /_   / /__| (_| | |_) | || (_) | |_) \__ \" -ForegroundColor Green -NoNewline; Write-Host "          |" -ForegroundColor Red 
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "\_\ \/\/ /_/\____/   \____/\__,_| .__/ \__\___/| .__/|___/" -ForegroundColor Green -NoNewline; Write-Host "          |" -ForegroundColor Red 
+Write-Host "|        "  -ForegroundColor Red -NoNewline; Write-Host "                                |_|            |_|  " -ForegroundColor Green -NoNewline; Write-Host "                |" -ForegroundColor Red 
 Write-Host "|                               NHI Laptop Updater                           |" -ForegroundColor Red 
 Write-Host "|                                                                            |" -ForegroundColor Red 
 Write-Host "|                                  Version 1.0                               |" -ForegroundColor Red 
@@ -114,7 +111,7 @@ if ($nochecks -eq $false) {
   
   # Check to make sure host is supported
   Write-Host "[+] Checking to make sure Operating System is compatible"
-  if (-Not ([System.Environment]::OSVersion.Version.Major -eq 10))){
+  if (-Not ([System.Environment]::OSVersion.Version.Major -eq 10)){
     Write-Host "`t[ERR] $((Get-WmiObject -class Win32_OperatingSystem).Caption) is not supported, please use Windows 10" -ForegroundColor Red
     exit 
   }
@@ -124,12 +121,12 @@ if ($nochecks -eq $false) {
   }
 
   # Prompt user to remind them to take a snapshot
-  Write-Host "[-] Do you need to take a snapshot before continuing? Y/N " -ForegroundColor Yellow -NoNewline
-  $response = Read-Host
-  if ($response -ne "N") {
-    Write-Host "[*] Exiting..." -ForegroundColor Red
-    exit
-  }
+  #Write-Host "[-] Do you need to take a snapshot before continuing? Y/N " -ForegroundColor Yellow -NoNewline
+  #$response = Read-Host
+  #if ($response -ne "N") {
+  #  Write-Host "[*] Exiting..." -ForegroundColor Red
+  #  exit
+  #}
 
   Write-Host "`tContinuing..." -ForegroundColor Green
 }
@@ -163,15 +160,17 @@ try {
 $Boxstarter.RebootOk = $true    # Allow reboots?
 $Boxstarter.NoPassword = $false # Is this a machine with no login password?
 $Boxstarter.AutoLogin = $true   # Save my password securely and auto-login after a reboot
-Set-BoxstarterConfig -NugetSources "https://www.myget.org/F/fireeye/api/v2;https://chocolatey.org/api/v2"
+Set-BoxstarterConfig -NugetSources "preconfig\;installer\;config\"
 
 # Needed for many applications
-# Set up the correct feed
-$aquaveoFeed = "https://www.myget.org/F/fireeye/api/v2"
-iex "choco sources add -n=fireeye -s $fireeyeFeed --priority 1"
-iex "choco upgrade -y vcredist-all.flare"
 iex "cinst -y powershell"
 
+# Pack all the steps
+
+iex "choco pack preconfig\preconfig.nuspec --outputdirectory preconfig\"
+iex "choco pack installer\installer.nuspec --outputdirectory installer\"
+iex "choco pack config\config.nuspec --outputdirectory config\"
+
 choco config set cacheLocation ${Env:TEMP}
-  iex "choco upgrade -y commandovm.win10.preconfig.fireeye"
-  Install-BoxstarterPackage -PackageName commandovm.win10.installer.fireeye -Credential $cred
+  #iex "choco upgrade -y preconfig -s preconfig\preconfig.1.0.nupkg"   # commenting out to speed up testing
+  Install-BoxstarterPackage -PackageName installer.1.0.nupkg -Credential $cred

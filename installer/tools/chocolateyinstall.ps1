@@ -109,7 +109,7 @@ function InitialSetup {
   refreshenv
 
   # BoxStarter setup
-  Set-BoxstarterConfig -NugetSources "$fireeyeFeed;https://chocolatey.org/api/v2"
+  Set-BoxstarterConfig -NugetSources "https://chocolatey.org/api/v2"
 
   # Tweak power options to prevent installs from timing out
   & powercfg -change -monitor-timeout-ac 0 | Out-Null

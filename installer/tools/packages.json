@@ -1,0 +1,7 @@
+{
+    "packages": [
+        {"name": "sms"},
+        {"name": "gms"},
+        {"name": "wms"}
+    ]
+}
