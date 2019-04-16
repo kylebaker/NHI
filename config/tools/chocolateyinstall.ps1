@@ -46,21 +46,6 @@ function PinToTaskbar {
 Write-Host "[+] Beginning host configuration..." -ForegroundColor Green
 
 
-# #### Disable services ####
-Write-Host "[-] Disabling services" -ForegroundColor Green
-Set-Service OpenVPNService -StartupType Manual -ErrorAction SilentlyContinue 
-Set-Service OpenVPNServiceInteractive -StartupType Manual -ErrorAction SilentlyContinue 
-Set-Service OpenVPNServiceLegacy -StartupType Manual -ErrorAction SilentlyContinue 
-Write-Host "`t[+] Disabled OpenVPN Services" -ForegroundColor Green
-Set-Service neo4j -StartupType Manual -ErrorAction SilentlyContinue
-Stop-Service -Name neo4j 
-Write-Host "`t[+] Disabled Neo4j" -ForegroundColor Green
-Set-Service OpenSSHd -StartupType Manual -ErrorAction SilentlyContinue
-Stop-Service -Name OpenSSHd -ErrorAction SilentlyContinue
-Write-Host "`t[+] Disabled OpenSSH Service" -ForegroundColor Green
-Start-Sleep -Seconds 2
-
-
 #### Remove Desktop Shortcuts ####
 Write-Host "[+] Cleaning up the Desktop" -ForegroundColor Green
 $shortcut_path = "C:\Users\Public\Desktop\Boxstarter Shell.lnk"
@@ -89,6 +74,16 @@ Set-Content -Path $profile -Value $psprompt
 iex ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("Y21kIC9jICdzZXR4IFBST01QVCBDT01NQU5ETyRTJGQkcyR0JF8kcCQrJGcn"))) | Out-Null
 Write-Host "`t[+] Timestamps added to cmd prompt and PowerShell" -ForegroundColor Green
 
+#### Shortcut to Excercises Folder ####
+Write-Host "[-] Copying files to the Excercises Folder" -ForegroundColor Green
+$target_file = "E:\Training\"
+$target_dir = Join-Path $toolsDir "Excercises\"
+Copy-Item -Path $target_dir -Recurse -Destination $target_file -Container
+
+$target_file = "E:\Training\Excercises"
+$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
+$shortcut = Join-Path $target_dir "\Desktop\Excercises.lnk"
+Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
 
 #### Pin Items to Taskbar ####
 Write-Host "[-] Pinning items to Taskbar" -ForegroundColor Green
@@ -102,22 +97,27 @@ try {
 }
 
 # SMS
-$target_file = Join-Path ${Env:WinDir} "Program Files\SMS 13.0 64-bit\sms130.exe"
-$target_dir = ${Env:UserProfile}
-$shortcut = Join-Path ${Env:UserProfile} "temp\CMD.lnk"
-Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -Arguments $target_args -WorkingDirectory $target_dir -PinToTaskbar -RunasAdmin
+$t_file = Join-Path ${Env:SystemDrive} "Program` Files\SMS*\sms*.exe"
+$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
+Write-Host $target_file
+$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
+$shortcut = Join-Path $target_dir "\Desktop\SMS.lnk"
+Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
+Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
 try {
   PinToTaskbar $shortcut
 } catch {
   Write-Host "Could not pin $target_file to the tasbar"
 }
 
-# Powershell
-$target_file = Join-Path (Join-Path ${Env:WinDir} "system32\WindowsPowerShell\v1.0") "powershell.exe"
-$target_dir = ${Env:UserProfile}
-$target_args = '-NoExit -Command "cd ' + "${Env:UserProfile}" + '"'
-$shortcut = Join-Path ${Env:UserProfile} "temp\PowerShell.lnk"
-Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -Arguments $target_args -WorkingDirectory $target_dir -PinToTaskbar -RunasAdmin
+# WMS
+$t_file = Join-Path ${Env:SystemDrive} "Program` Files\WMS*\wms[0-9][0-9][0-9].exe"
+$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
+Write-Host $target_file
+$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
+$shortcut = Join-Path $target_dir "\Desktop\WMS.lnk"
+Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
+Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
 try {
   PinToTaskbar $shortcut
 } catch {
