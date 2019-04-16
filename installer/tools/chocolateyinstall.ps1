@@ -7,7 +7,7 @@ $packageName      = 'installer'
 $toolsDir         = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $cache            =  "$env:userprofile\AppData\Local\ChocoCache"
 $globalCinstArgs  = "--cacheLocation $cache -y"
-$toolList         = Join-Path ${Env:ProgramData} "Microsoft\Windows\Start Menu\Programs\Tool List"
+$exercises         = "C:\Exercises"
 $pkgPath          = Join-Path $toolsDir "packages.json"
 
 
@@ -88,20 +88,13 @@ function InitialSetup {
   # Create the cache directory
   New-Item -Path $cache -ItemType directory -Force
 
-############################################################################### This needs to be a folder that goes to the excercies on the spare drive.
-
-  # Create excercises folder desktop shortcut
-  if (-Not (Test-Path -Path $toolList) ) {
-    New-Item -Path $toolList -ItemType directory
+  # Create excercises folder if it doesn't exist
+  if (-Not (Test-Path -Path $exercises) ) {
+    New-Item -Path $exercises -ItemType directory
   }
 
-  # Create C:\Tools directory
-  if (-Not (Test-Path -Path "${Env:HomeDrive}\Tools")) {
-    New-Item -Path "${Env:HomeDrive}\Tools" -ItemType directory
-  }
-
-  $desktopShortcut = Join-Path ${Env:UserProfile} "Desktop\Tools.lnk"
-  Install-ChocolateyShortcut -shortcutFilePath $desktopShortcut -targetPath $toolList
+  $desktopShortcut = Join-Path ${Env:UserProfile} "Desktop\Exercises.lnk"
+  Install-ChocolateyShortcut -shortcutFilePath $desktopShortcut -targetPath $exercises
 
   # Set common paths in environment variables
   Install-ChocolateyEnvironmentVariable -VariableName "FLARE_START" -VariableValue $toolList -VariableType 'Machine'
@@ -109,7 +102,7 @@ function InitialSetup {
   refreshenv
 
   # BoxStarter setup
-  Set-BoxstarterConfig -NugetSources "https://chocolatey.org/api/v2"
+  Set-BoxstarterConfig -LocalRepo "C:\packages\"
 
   # Tweak power options to prevent installs from timing out
   & powercfg -change -monitor-timeout-ac 0 | Out-Null
@@ -129,7 +122,7 @@ function CleanUp
   Remove-Item $cache -Recurse
 
   # Final commandovm installation
-  iex "choco upgrade config.1.0.nuspec -s config\"
+  iex "choco upgrade config -s C:\packages\"
 }
 
 

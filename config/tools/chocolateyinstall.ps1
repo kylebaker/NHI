@@ -92,17 +92,18 @@ Write-Host "`t[+] Timestamps added to cmd prompt and PowerShell" -ForegroundColo
 
 #### Pin Items to Taskbar ####
 Write-Host "[-] Pinning items to Taskbar" -ForegroundColor Green
-# Explorer
+
+# Exploarer
 $target_file = Join-Path ${Env:WinDir} "explorer.exe"
 try {
   PinToTaskbar $target_file
 } catch {
   Write-Host "Could not pin $target_file to the tasbar"
 }
-# CMD prompt
-$target_file = Join-Path ${Env:WinDir} "system32\cmd.exe"
+
+# SMS
+$target_file = Join-Path ${Env:WinDir} "Program Files\SMS 13.0 64-bit\sms130.exe"
 $target_dir = ${Env:UserProfile}
-$target_args = '/K "cd ' + ${Env:UserProfile} + '"'
 $shortcut = Join-Path ${Env:UserProfile} "temp\CMD.lnk"
 Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -Arguments $target_args -WorkingDirectory $target_dir -PinToTaskbar -RunasAdmin
 try {
@@ -110,6 +111,7 @@ try {
 } catch {
   Write-Host "Could not pin $target_file to the tasbar"
 }
+
 # Powershell
 $target_file = Join-Path (Join-Path ${Env:WinDir} "system32\WindowsPowerShell\v1.0") "powershell.exe"
 $target_dir = ${Env:UserProfile}
