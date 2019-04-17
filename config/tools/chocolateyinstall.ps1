@@ -127,7 +127,7 @@ try {
 
 #### Rename the computer ####
 Write-Host "[+] Renaming host to 'commando'" -ForegroundColor Green
-(Get-WmiObject win32_computersystem).rename("commando") | Out-Null
+#(Get-WmiObject win32_computersystem).rename("commando") | Out-Null
 Write-Host "`t[-] Make sure to restart the machine for this change to take effect" -ForegroundColor Yellow
 Write-Host "[+] Changing Desktop Background" -ForegroundColor Green
 
