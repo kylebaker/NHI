@@ -173,5 +173,5 @@ iex "choco pack installer\installer.nuspec --outputdirectory C:\packages\"
 iex "choco pack config\config.nuspec --outputdirectory C:\packages\"
 
 choco config set cacheLocation ${Env:TEMP}
-  iex "choco upgrade -y preconfig -s C:\packages\"   # commenting out to speed up testing
-Install-BoxstarterPackage -PackageName installer -Credential $cred
+  # iex "choco upgrade -y preconfig -s C:\packages\"   # commenting out to speed up testing
+Install-BoxstarterPackage -PackageName installer -Credential $cred 

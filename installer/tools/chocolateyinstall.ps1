@@ -118,6 +118,7 @@ function InitialSetup {
 
 function CleanUp
 {
+  Write-Host "Now running CleanUp"
   # clean up the cache directory
   Remove-Item $cache -Recurse
 
@@ -127,7 +128,9 @@ function CleanUp
 
 
 function Main {
+  Write-Host "Before setup"
   InitialSetup
+  Write-Host "After setup, now running MAIN"
 
   $json = LoadPackages $pkgPath
   if ($json -eq $null -Or $json.packages -eq $null) {
@@ -138,6 +141,7 @@ function Main {
   $packages = $json.packages
   foreach ($pkg in $packages) {
     $name = $pkg.name
+    Write-Host "Installing" $pkg
     $rc = InstallOnePackage $pkg
     if ($rc) {
       # Try not to get rate-limited
