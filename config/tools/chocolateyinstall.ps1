@@ -78,7 +78,7 @@ Write-Host "`t[+] Timestamps added to cmd prompt and PowerShell" -ForegroundColo
 Write-Host "[-] Copying files to the Excercises Folder" -ForegroundColor Green
 $target_file = "E:\Training\"
 $target_dir = Join-Path $toolsDir "Excercises\"
-Copy-Item -Path $target_dir -Recurse -Destination $target_file -Container
+Copy-Item -Path $target_dir -Recurse -Destination $target_file -Container -Force
 
 $target_file = "E:\Training\Excercises"
 $target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
@@ -97,32 +97,32 @@ try {
 }
 
 # SMS
-$t_file = Join-Path ${Env:SystemDrive} "Program` Files\SMS*\sms*.exe"
-$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
-Write-Host $target_file
-$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
-$shortcut = Join-Path $target_dir "\Desktop\SMS.lnk"
-Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
-Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
-try {
-  PinToTaskbar $shortcut
-} catch {
-  Write-Host "Could not pin $target_file to the tasbar"
-}
+#t_file = Join-Path ${Env:SystemDrive} "Program` Files\SMS*\sms*.exe"
+#$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
+#Write-Host $target_file
+#$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
+#$shortcut = Join-Path $target_dir "\Desktop\SMS.lnk"
+#Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
+#Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
+#try {
+#  PinToTaskbar $shortcut
+#} catch {
+#  Write-Host "Could not pin $target_file to the tasbar"
+#}
 
 # WMS
-$t_file = Join-Path ${Env:SystemDrive} "Program` Files\WMS*\wms[0-9][0-9][0-9].exe"
-$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
-Write-Host $target_file
-$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
-$shortcut = Join-Path $target_dir "\Desktop\WMS.lnk"
-Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
-Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
-try {
-  PinToTaskbar $shortcut
-} catch {
-  Write-Host "Could not pin $target_file to the tasbar"
-}
+#$t_file = Join-Path ${Env:SystemDrive} "Program` Files\WMS*\wms[0-9][0-9][0-9].exe"
+#$target_file = Resolve-Path $t_file | Select -ExpandProperty Path
+#Write-Host $target_file
+#$target_dir = Join-Path ${Env:SystemDrive} "Users\NHI"
+#$shortcut = Join-Path $target_dir "\Desktop\WMS.lnk"
+#Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file -WorkingDirectory $target_dir -PinToTaskbar
+#Install-ChocolateyPinnedTaskBarItem -TargetFilePath $target_file
+#try {
+#  PinToTaskbar $shortcut
+#} catch {
+#  Write-Host "Could not pin $target_file to the tasbar"
+#}
 
 
 #### Rename the computer ####

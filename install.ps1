@@ -172,6 +172,10 @@ iex "choco pack preconfig\preconfig.nuspec --outputdirectory C:\packages\"
 iex "choco pack installer\installer.nuspec --outputdirectory C:\packages\"
 iex "choco pack config\config.nuspec --outputdirectory C:\packages\"
 
+$target_file = "C:\packages\"
+$target_dir = Join-Path $MyInvocation.MyCommand.Path "\..\CustomPackages\"
+Copy-Item -Path $target_dir -Recurse -Destination $target_file -Container -Force
+
 choco config set cacheLocation ${Env:TEMP}
-  # iex "choco upgrade -y preconfig -s C:\packages\"   # commenting out to speed up testing
+Invoke-Expression "choco upgrade -y preconfig -s C:\packages\"   # commenting out to speed up testing
 Install-BoxstarterPackage -PackageName installer -Credential $cred 

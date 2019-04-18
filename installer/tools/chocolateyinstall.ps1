@@ -63,16 +63,15 @@ function CleanUp
   Remove-Item $cache -Recurse
 
   # Final commandovm installation
-  iex "choco upgrade config -s C:\packages\"
+  Invoke-Expression "choco upgrade config -s C:\packages\"
 }
 
 
 function Main {
   InitialSetup
 
-  cinst upgrade sms $globalCinstArgs
-  cinst upgrade wms $globalCinstArgs
-
+  Invoke-Expression "choco upgrade smsdev -s C:\packages\CustomPackages\smsdev.13.0.nupkg -yf"
+  Invoke-Expression "choco upgrade wms -s C:\packages\CustomPackages\wms.11.0.2.nupkg -yf"
 
   CleanUp
   return 0
